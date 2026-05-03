@@ -1,10 +1,10 @@
-# Living Dex
+# Cobble Dex
 
-A personal living dex tracker for [Cobblemon](https://modrinth.com/mod/cobblemon) Mod (v1.7.3).
+A personal poke-dex tracker for [Cobblemon](https://modrinth.com/mod/cobblemon) Mod (v1.7.3).
 
 ## Overview
 
-Could not find a free alternative living dex tracker for cobblemon, so here is my attempt at making one.
+Could not find a good and free poke-dex tracker for cobblemon, so here is my attempt at making one.
 
 ![Fine ill do it myself, Thanos Meme](public/thanos.jpg)
 
