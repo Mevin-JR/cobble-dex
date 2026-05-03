@@ -6,7 +6,7 @@ A personal living dex tracker for [Cobblemon](https://modrinth.com/mod/cobblemon
 
 Could not find a free alternative living dex tracker for cobblemon, so here is my attempt at making one.
 
-![Fine ill do it myself, Thanos Meme] (/public/thanos.jpg)
+![Fine ill do it myself, Thanos Meme](/public/thanos.jpg)
 
 > **_Under construction_**
 
