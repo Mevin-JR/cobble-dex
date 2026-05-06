@@ -1,11 +1,14 @@
-import "./App.css";
+import Navbar from "./components/navbar";
 
 function App() {
-  return (
-    <>
-      <div>Hi</div>
-    </>
-  );
+    return (
+        <>
+            <Navbar />
+            <main className="bg-[#0F172A] min-h-screen w-full flex items-center justify-center">
+                <span className="text-2xl">🚧 Under Construction 🚧</span>
+            </main>
+        </>
+    );
 }
 
 export default App;
