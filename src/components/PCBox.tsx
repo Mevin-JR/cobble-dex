@@ -3,24 +3,14 @@ import { Box } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { getPokemonDetails } from "../utils/pokeAPI";
 import { useMarkedPokemon } from "../context/MarkedPokemonContext";
+import { getRegionByPokemonId } from "../utils/helpers";
 
 export type Pokemon = {
     id: string;
     name: string;
     sprite: string;
+    isVisible?: boolean; // Injected by dex.tsx during filtering
 };
-
-function getRegionName(id: number) {
-    if (id <= 151) return "Kanto";
-    if (id <= 251) return "Johto";
-    if (id <= 386) return "Hoenn";
-    if (id <= 493) return "Sinnoh";
-    if (id <= 649) return "Unova";
-    if (id <= 721) return "Kalos";
-    if (id <= 809) return "Alola";
-    if (id <= 905) return "Galar";
-    return "Paldea";
-}
 
 interface PCBoxProps {
     index: number;
@@ -65,11 +55,13 @@ export default function PCBox({ index, pokemonList }: PCBoxProps) {
 
     const firstId = Number(pokemonList[0]?.id || 0);
     const lastId = Number(pokemonList[pokemonList.length - 1]?.id || 0);
-    const startRegion = getRegionName(firstId);
-    const endRegion = getRegionName(lastId);
+    const startRegion = getRegionByPokemonId(firstId);
+    const endRegion = getRegionByPokemonId(lastId);
     const regionText = startRegion === endRegion ? startRegion : `${startRegion} / ${endRegion}`;
     
-    const markedCount = pokemonList.filter(p => markedSet.has(p.id)).length;
+    // Calculate how many of the VISIBLE pokemon in this box are marked
+    const visiblePokemon = pokemonList.filter(p => p.isVisible !== false);
+    const markedCount = visiblePokemon.filter(p => markedSet.has(p.id)).length;
 
     return (
         <div className="w-full flex flex-col border border-(--border) rounded-2xl">
