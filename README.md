@@ -13,7 +13,7 @@ Could not find a good and free poke-dex tracker for cobblemon, so here is my att
 ## Tasks
 
 - [x] Initial work (designs, backend setups etc..)
-- [ ] Sorting all pokemon
+- [/] Sorting all pokemon, marking systems
 - [ ] Creating categories
 - [ ] Connecting ingame PC to tracker
 
