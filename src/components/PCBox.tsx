@@ -71,12 +71,26 @@ export default function PCBox({ index, pokemonList }: PCBoxProps) {
                     <span className="font-semibold text-white">Box {index + 1}: {regionText} ({firstId} - {lastId})</span>
                 </div>
                 <span className="text-sm font-semibold text-gray-400">
-                    {markedCount} / {pokemonList.length}
+                    {markedCount} / {visiblePokemon.length}
                 </span>
             </div>
             <div className="w-full mx-auto grid grid-cols-5 md:grid-cols-6 gap-2 p-2">
                 {pokemonList.map((pokemon) => {
                     const isMarked = markedSet.has(pokemon.id);
+                    
+                    if (pokemon.isVisible === false) {
+                        return (
+                            <div
+                                key={pokemon.id}
+                                className="relative h-20 w-full flex flex-col items-center justify-center bg-[#131B2E]/40 rounded-lg border border-transparent"
+                            >
+                                <span className="text-xl text-gray-700/50 font-bold">
+                                    #{pokemon.id}
+                                </span>
+                            </div>
+                        );
+                    }
+
                     return (
                     <div
                         key={pokemon.id}
