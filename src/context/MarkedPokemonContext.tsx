@@ -6,6 +6,7 @@ import { doc, getDoc, setDoc, onSnapshot, updateDoc } from "firebase/firestore";
 interface MarkedPokemonContextType {
     markedSet: Set<string>;
     toggleMark: (id: string) => void;
+    updateMarks: (adds: string[], removes: string[]) => Promise<void>;
 }
 
 const MarkedPokemonContext = createContext<MarkedPokemonContextType>({} as MarkedPokemonContextType);
@@ -114,8 +115,25 @@ export function MarkedPokemonProvider({ children }: { children: ReactNode }) {
         }
     };
 
+    const updateMarks = async (adds: string[], removes: string[]) => {
+        const newSet = new Set(markedSet);
+        adds.forEach(id => newSet.add(id));
+        removes.forEach(id => newSet.delete(id));
+
+        if (user) {
+            setMarkedSet(newSet);
+            const userDocRef = doc(db, "users", user.uid);
+            await updateDoc(userDocRef, {
+                markedPokemon: Array.from(newSet)
+            });
+        } else {
+            setMarkedSet(newSet);
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(Array.from(newSet)));
+        }
+    };
+
     return (
-        <MarkedPokemonContext.Provider value={{ markedSet, toggleMark }}>
+        <MarkedPokemonContext.Provider value={{ markedSet, toggleMark, updateMarks }}>
             {children}
         </MarkedPokemonContext.Provider>
     );

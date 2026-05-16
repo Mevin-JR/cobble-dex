@@ -96,7 +96,7 @@ export default function PCBox({ index, pokemonList }: PCBoxProps) {
                         key={pokemon.id}
                         className={`relative h-20 w-full flex flex-col items-center justify-center rounded-lg border transition-colors duration-200 cursor-pointer ${
                             isMarked 
-                                ? "bg-red-900/40 border-red-500" 
+                                ? "bg-emerald-900/40 border-emerald-500" 
                                 : "bg-[#131B2E] border-transparent hover:border-(--accent)"
                         }`}
                         onMouseEnter={() => setHovered(pokemon)}
@@ -104,7 +104,8 @@ export default function PCBox({ index, pokemonList }: PCBoxProps) {
                         onDoubleClick={() => toggleMark(pokemon.id)}
                     >
                         <img
-                            className="w-full h-full object-contain [image-rendering:pixelated] scale-[1.2] hover:scale-[1.3] transition-transform"
+                            className="w-full h-full object-contain [image-rendering:pixelated] scale-[1.2] hover:scale-[1.3] transition-transform pointer-events-none"
+                            draggable={false}
                             src={pokemon.sprite}
                             alt={pokemon.name}
                         />

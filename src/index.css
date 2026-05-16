@@ -23,9 +23,18 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
+    /* Prevent selection and dragging */
+    user-select: none;
+    -webkit-user-select: none;
+
     @media (max-width: 1024px) {
         font-size: 16px;
     }
+
+}
+
+img {
+    -webkit-user-drag: none;
 }
 
 /* Custom Scrollbar */

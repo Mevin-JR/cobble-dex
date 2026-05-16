@@ -14,7 +14,7 @@ export default function Dex() {
         staleTime: Infinity,
     });
 
-    const { markedSet } = useMarkedPokemon();
+    const { markedSet, updateMarks } = useMarkedPokemon();
 
     const [selectedRegions, setSelectedRegions] = useState<string[]>(() => {
         const saved = localStorage.getItem("selectedRegions");
@@ -107,10 +107,53 @@ export default function Dex() {
         };
     }, [query.data, selectedRegions, statusFilter, markedSet]);
 
+    const totalPokemon = query.data?.length || 0;
+    const globalMarkedCount = markedSet.size;
+    const completionPercentage = totalPokemon > 0 
+        ? ((globalMarkedCount / totalPokemon) * 100).toFixed(1) 
+        : "0.0";
+
+    const handleMarkAll = () => {
+        const visibleIds = processedChunks.flatMap(chunk => 
+            chunk.filter(p => p.isVisible).map(p => p.id)
+        );
+        updateMarks(visibleIds, []);
+    };
+
+    const handleClearAllMarked = () => {
+        const visibleIds = processedChunks.flatMap(chunk => 
+            chunk.filter(p => p.isVisible).map(p => p.id)
+        );
+        updateMarks([], visibleIds);
+    };
+
     return (
         <>
             <Navbar />
             <section className="mt-5 max-w-[95vw] lg:max-w-[80vw] mx-auto pb-10">
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8 mt-8">
+                    <div>
+                        <h1 className="text-3xl md:text-4xl font-bold text-(--accent) mb-2">National Pokédex</h1>
+                        <p className="text-gray-400 text-sm md:text-base font-medium">Catch 'em all, and track 'em all</p>
+                    </div>
+
+                    <div className="bg-[#131B2E] border border-(--border) rounded-xl p-4 w-full md:w-64 shadow-lg flex flex-col gap-1">
+                        <div className="flex justify-between items-center w-full">
+                            <span className="text-[10px] font-bold text-gray-400 tracking-widest uppercase">Completion</span>
+                            <span className="text-xs font-bold text-emerald-500">{completionPercentage}%</span>
+                        </div>
+                        <span className="text-2xl font-bold text-white tracking-wide">
+                            {globalMarkedCount} <span className="text-gray-400 text-xl font-semibold">/ {totalPokemon}</span>
+                        </span>
+                        <div className="w-full h-1.5 bg-[#0F172A] rounded-full mt-2 overflow-hidden border border-(--border)">
+                            <div 
+                                className="h-full bg-gradient-to-r from-emerald-600 to-emerald-400 rounded-full" 
+                                style={{ width: `${completionPercentage}%` }}
+                            ></div>
+                        </div>
+                    </div>
+                </div>
+
                 <FilterBar 
                     selectedRegions={selectedRegions}
                     onRegionToggle={handleRegionToggle}
@@ -120,6 +163,21 @@ export default function Dex() {
                     totalFiltered={totalFiltered}
                     markedFiltered={markedFiltered}
                 />
+
+                <div className="flex justify-end gap-3 mb-6 mt-2">
+                    <button 
+                        onClick={handleClearAllMarked}
+                        className="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 px-4 py-2 rounded-lg text-sm font-semibold transition-colors"
+                    >
+                        Clear All Marked
+                    </button>
+                    <button 
+                        onClick={handleMarkAll}
+                        className="bg-[#131B2E] hover:bg-slate-800 text-(--accent) border border-(--border) hover:border-(--accent) px-4 py-2 rounded-lg text-sm font-semibold transition-colors"
+                    >
+                        Mark All
+                    </button>
+                </div>
 
                 <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
                     {query.isLoading ? (
